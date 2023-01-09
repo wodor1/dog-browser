@@ -59,17 +59,14 @@ class SearchImage extends ContentComponent {
             this.clearContent();
             if (count === 1 || isNaN(count) === true || count === 0) {
               count = 1;
-              console.log('lefutott az if');
               this.displayImage(imageList);
             } else if (count > 1) {
               for (let i = 1; i <= count; i++) {
                 this.displayImage(imageList);
-                console.log('lefutott az else if');
               }
             } else {
                 this.displayError('Please enter a valid number');
             }
-            console.log(parseFloat(Math.floor(document.querySelector('#imageNumberInput').value)));
           } else {
             this.displayError('Breed not found. Please try to list the breeds first.');
           }
