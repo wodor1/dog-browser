@@ -1,5 +1,6 @@
 import '../css/listBreedsComponent.css';
 import ContentComponent from '../contentComponent/contentComponent.js';
+import { data } from 'autoprefixer';
 
 class ListBreeds extends ContentComponent {
   constructor() {
@@ -8,12 +9,24 @@ class ListBreeds extends ContentComponent {
   }
 
   async getFullList() {
-    const response = await fetch('https://dog.ceo/api/breeds/list/all');
-    if (!response.ok) {
-      throw new Error('API response error');
+    if (localStorage.getItem('dogs') === null) {
+      const response = await fetch('https://dog.ceo/api/breeds/list/all');
+      if (!response.ok) {
+        throw new Error('API response error');
+      }
+      const data = await response.json();
+      localStorage.setItem('dogs', JSON.stringify(data.message));
+      //console.log('if');
+      return data.message;
+    } else {
+      //console.log('else');
+      const data = JSON.parse(localStorage.getItem('dogs'));
+      //ha törölni akarjuk a localStorage-ból a dogs kulcsot, akkor a következő sor kommentezését kell feloldani
+      //localStorage.removeItem('dogs');
+      //vagy a következő sor kommentezését
+      //localStorage.clear();
+      return data;
     }
-    const data = await response.json();
-    return data.message;
   }
 
   /**
