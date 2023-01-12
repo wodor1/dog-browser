@@ -55,6 +55,7 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
-    "postcss-scss": "^4.0.6"
+    "postcss-scss": "^4.0.6",
+    "vanilla-lazyload": "^17.8.3"
   }
 }

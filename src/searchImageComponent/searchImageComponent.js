@@ -1,5 +1,7 @@
 import '../css/searchImageComponent.css';
 import ContentComponent from '../contentComponent/contentComponent.js';
+import LazyLoad from "vanilla-lazyload";
+import preloading from '../img/preloading.gif';
 
 class SearchImage extends ContentComponent {
   constructor() {
@@ -28,10 +30,18 @@ class SearchImage extends ContentComponent {
 
   displayImage(imageList) {
     const image = document.createElement('img');
-    image.src = imageList[Math.floor(Math.random() * imageList.length)];
+    const classes = image.classList;
+    classes.add("lazy");
+    image.textContent = classes;
+    image.src = preloading;
+    image.setAttribute('data-srcset', imageList[Math.floor(Math.random() * imageList.length)]);
+    //image.src = imageList[Math.floor(Math.random() * imageList.length)];
     // this.clearContent();
     this.clearErrors();
+    const lazyLoadInstance = new LazyLoad({
+    });
     document.querySelector('#content').appendChild(image);
+    lazyLoadInstance.update();
   }
 
   render() {

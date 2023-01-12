@@ -42,3 +42,17 @@ input {
   max-width: 100%;
   margin: 1rem;
 }
+
+#content img.lazy {
+  opacity: 0.5;
+}
+
+#content img:not(.initial) {
+  transition: opacity 1.0s;
+}
+
+#content img.initial,
+#content img.loaded,
+#content img.error {
+  opacity: 1;
+}
