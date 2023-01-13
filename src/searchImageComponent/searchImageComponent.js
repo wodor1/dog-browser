@@ -44,6 +44,39 @@ class SearchImage extends ContentComponent {
     lazyLoadInstance.update();
   }
 
+  handleSearch() {
+     // megakadályozzuk a form küldését
+     event.preventDefault();
+     const searchTerm = document.querySelector('#dogSearchInput').value.toLowerCase();
+     if (!searchTerm) {
+       this.displayError('Please enter a search term');
+       return;
+     }
+     this.getImages(searchTerm)
+       .then((imageList) => {
+         if (imageList) {
+           let count = parseFloat(Math.floor(document.querySelector('#imageNumberInput').value));
+           this.clearContent();
+           if (count === 1 || isNaN(count) === true || count === 0) {
+             count = 1;
+             this.displayImage(imageList);
+           } else if (count > 1) {
+             for (let i = 1; i <= count; i++) {
+               this.displayImage(imageList);
+             }
+           } else {
+               this.displayError('Please enter a valid number');
+           }
+         } else {
+           this.displayError('Breed not found. Please try to list the breeds first.');
+         }
+       })
+       .catch((error) => {
+         this.displayError('Something went wrong. Please try again later.');
+         console.error(error);
+       });
+  }
+
   render() {
     const markup = `
     <form class="dog-search">
@@ -54,37 +87,14 @@ class SearchImage extends ContentComponent {
     </form>
     `;
     document.querySelector('#header').insertAdjacentHTML('beforeend', markup);
-    document.querySelector('.dog-search button').addEventListener('click', (event) => {
-      // megakadályozzuk a form küldését
-      event.preventDefault();
-      const searchTerm = document.querySelector('#dogSearchInput').value.toLowerCase();
-      if (!searchTerm) {
-        this.displayError('Please enter a search term');
-        return;
-      }
-      this.getImages(searchTerm)
-        .then((imageList) => {
-          if (imageList) {
-            let count = parseFloat(Math.floor(document.querySelector('#imageNumberInput').value));
-            this.clearContent();
-            if (count === 1 || isNaN(count) === true || count === 0) {
-              count = 1;
-              this.displayImage(imageList);
-            } else if (count > 1) {
-              for (let i = 1; i <= count; i++) {
-                this.displayImage(imageList);
-              }
-            } else {
-                this.displayError('Please enter a valid number');
-            }
-          } else {
-            this.displayError('Breed not found. Please try to list the breeds first.');
-          }
-        })
-        .catch((error) => {
-          this.displayError('Something went wrong. Please try again later.');
-          console.error(error);
-        });
+    document.addEventListener('onSearch', (e) => {
+      console.log(e.detail);
+      document.querySelector('#dogSearchInput').value = e.detail;
+      this.handleSearch();
+    });
+    document.querySelector('.dog-search button').addEventListener('click', (e) =>  {
+      e.preventDefault();
+      this.handleSearch();
     });
   }
 }
