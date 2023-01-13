@@ -88,7 +88,6 @@ class SearchImage extends ContentComponent {
     `;
     document.querySelector('#header').insertAdjacentHTML('beforeend', markup);
     document.addEventListener('onSearch', (e) => {
-      console.log(e.detail);
       document.querySelector('#dogSearchInput').value = e.detail;
       this.handleSearch();
     });
